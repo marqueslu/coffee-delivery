@@ -19,7 +19,7 @@ export function Header() {
             <MapPin weight="fill" size={22} />
             Jundiaí, SP
           </Location>
-          <NavLink to="/" title="cart">
+          <NavLink to="/checkout" title="cart">
             <CartLink>
               <ShoppingCart size={22} weight="fill" />
               <span>3</span>
