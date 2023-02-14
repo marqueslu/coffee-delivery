@@ -15,7 +15,7 @@ export const HeaderContainer = styled.header`
     align-items: center;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1180px) {
     padding-right: 10rem;
     padding-left: 10rem;
   }
