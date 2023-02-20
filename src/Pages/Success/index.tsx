@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 
@@ -7,6 +8,9 @@ import * as S from './styles'
 
 export function Success() {
   const colors = useTheme()
+  const location = useLocation()
+  const { street, city, number, neighborhood, uf } = location.state.data
+  const { paymentMethod } = location.state
 
   return (
     <S.SuccessContainer>
@@ -21,9 +25,14 @@ export function Success() {
             </span>
             <div>
               <p>
-                Entrega em <strong>Rua João Daniel Martinelly, 102</strong>
+                Entrega em{' '}
+                <strong>
+                  {street}, {number}
+                </strong>
               </p>
-              <p>Farrapos - Porto Alegre, RS</p>
+              <p>
+                {neighborhood} - {city}, {uf}
+              </p>
             </div>
           </S.DeliveryInfoItem>
 
@@ -46,7 +55,7 @@ export function Success() {
             <div>
               <p>Pagamento na entrega</p>
               <p>
-                <strong>Cartão de Crédito</strong>
+                <strong>{paymentMethod}</strong>
               </p>
             </div>
           </S.DeliveryInfoItem>
