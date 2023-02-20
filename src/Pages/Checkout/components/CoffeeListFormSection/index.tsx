@@ -1,7 +1,9 @@
 import { Trash } from 'phosphor-react'
-import { FormEvent } from 'react'
+import { useContext } from 'react'
+import { ToastContainer } from 'react-toastify'
 import { useTheme } from 'styled-components'
 import { Actions } from '../../../../components/Actions'
+import { CoffeesContext } from '../../../../contexts/CoffeesContext'
 import { moneyFormat } from '../../../../utils/money-format'
 import * as S from './styles'
 
@@ -13,50 +15,39 @@ export interface Coffee {
   quantity: number
 }
 
-const mockedCoffeList: Coffee[] = [
-  {
-    id: 1,
-    imageName: 'expresso-tradicional.svg',
-    name: 'Expresso Tradicional',
-    price: 9.9,
-    quantity: 3,
-  },
-  {
-    id: 2,
-    imageName: 'expresso-americano.svg',
-    name: 'Expresso Americano',
-    price: 9.9,
-    quantity: 4,
-  },
-  {
-    id: 3,
-    imageName: 'expresso-cremoso.svg',
-    name: 'Expresso Cremoso',
-    price: 9.9,
-    quantity: 1,
-  },
-]
-
 export function CoffeeListFormSection() {
   const colors = useTheme()
-  const totalPrice = mockedCoffeList.reduce(
+  const {
+    cartItems,
+    removeItemFromcart,
+    increaseCoffeeAmount,
+    decreaseCoffeeAmount,
+  } = useContext(CoffeesContext)
+
+  const totalPrice = cartItems.reduce(
     (previousValue, currentValue) =>
-      currentValue.price * currentValue.quantity + previousValue,
+      currentValue.price * currentValue.amount + previousValue,
     0,
   )
+
   const deliveryFee = 3.5
-
-  function handleIncreseCoffeAmout() {}
-
-  function handleDecreaseCoffeAmount() {}
-
-  function onRemoveCoffeeItem(event: FormEvent) {
-    event.preventDefault()
-  }
 
   return (
     <S.CoffessListContainer>
-      {mockedCoffeList.map((coffee) => (
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        toastStyle={{ boxShadow: 'none' }}
+      />
+      {cartItems.map((coffee) => (
         <div key={coffee.id}>
           <S.CoffeeItem>
             <S.CoffeeInfo>
@@ -67,14 +58,14 @@ export function CoffeeListFormSection() {
 
                 <S.ActionsContainer>
                   <Actions
-                    amount={coffee.quantity}
-                    increase={handleIncreseCoffeAmout}
-                    decrease={handleDecreaseCoffeAmount}
+                    amount={coffee.amount}
+                    increase={() => increaseCoffeeAmount(coffee.id)}
+                    decrease={() => decreaseCoffeeAmount(coffee.id)}
                   />
 
                   <S.RemoveCoffeeButon
                     type="button"
-                    onClick={onRemoveCoffeeItem}
+                    onClick={() => removeItemFromcart(coffee.id)}
                   >
                     <Trash size={16} color={colors['purple-500']} />
                     <span>Remover</span>
@@ -84,7 +75,7 @@ export function CoffeeListFormSection() {
             </S.CoffeeInfo>
 
             <S.PriceLabel>
-              R$ {moneyFormat(coffee.price * coffee.quantity).slice(3)}
+              R$ {moneyFormat(coffee.price * coffee.amount).slice(3)}
             </S.PriceLabel>
           </S.CoffeeItem>
           <S.HorizontalLine />
@@ -108,7 +99,7 @@ export function CoffeeListFormSection() {
         </S.TotalAmountItem>
       </S.TotalAmountGroup>
 
-      <S.OrderConfirmationButton type="button">
+      <S.OrderConfirmationButton type="submit">
         Confirmar pedido
       </S.OrderConfirmationButton>
     </S.CoffessListContainer>
