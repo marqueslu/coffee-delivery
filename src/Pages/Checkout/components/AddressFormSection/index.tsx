@@ -1,4 +1,5 @@
 import { MapPinLine } from 'phosphor-react'
+import { useFormContext } from 'react-hook-form'
 import { useTheme } from 'styled-components'
 import { CardTitle } from '../CardTitle'
 
@@ -6,6 +7,8 @@ import * as S from './styles'
 
 export function AddressFormSection() {
   const colors = useTheme()
+
+  const { register } = useFormContext()
 
   return (
     <S.AddressContainer>
@@ -16,20 +19,38 @@ export function AddressFormSection() {
       />
 
       <S.InputsContainer>
-        <S.Input variantSize="small" placeholder="CEP" />
-        <S.Input variantSize="full" placeholder="Rua" />
+        <S.Input variantSize="small" placeholder="CEP" {...register('cep')} />
+        <S.Input variantSize="full" placeholder="Rua" {...register('street')} />
 
         <S.InputsGroup>
-          <S.Input variantSize="small" type="number" placeholder="Número" />
+          <S.Input
+            variantSize="small"
+            type="number"
+            placeholder="Número"
+            {...register('number', {
+              valueAsNumber: true,
+            })}
+          />
           <S.InputWrapper>
-            <S.complementInput placeholder="Complemento" />
+            <S.complementInput
+              placeholder="Complemento"
+              {...register('complement')}
+            />
             <p>Opcional</p>
           </S.InputWrapper>
         </S.InputsGroup>
         <S.InputsGroup>
-          <S.Input variantSize="small" placeholder="Bairro" />
-          <S.Input variantSize="large" placeholder="Cidade" />
-          <S.Input variantSize="tiny" placeholder="UF" />
+          <S.Input
+            variantSize="small"
+            placeholder="Bairro"
+            {...register('neighborhood')}
+          />
+          <S.Input
+            variantSize="large"
+            placeholder="Cidade"
+            {...register('city')}
+          />
+          <S.Input variantSize="tiny" placeholder="UF" {...register('uf')} />
         </S.InputsGroup>
       </S.InputsContainer>
     </S.AddressContainer>
