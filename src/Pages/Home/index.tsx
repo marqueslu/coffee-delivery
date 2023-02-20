@@ -4,6 +4,7 @@ import { Intro } from './components/Intro'
 import { CoffeeList } from '../../data/coffee-list'
 
 import * as S from './styles'
+import { ToastContainer } from 'react-toastify'
 
 export function Home() {
   return (
@@ -12,16 +13,22 @@ export function Home() {
 
       <S.CoffeesContainer>
         <S.CoffeeSectionTitle>Nossos cafés</S.CoffeeSectionTitle>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          toastStyle={{ boxShadow: 'none' }}
+        />
         <S.CoffeeCardsList>
           {CoffeeList.map((coffee) => (
-            <CoffeeCard
-              key={coffee.id}
-              imageName={coffee.imageName}
-              name={coffee.name}
-              tags={coffee.tags}
-              description={coffee.description}
-              price={coffee.price}
-            />
+            <CoffeeCard coffee={coffee} key={coffee.id} />
           ))}
         </S.CoffeeCardsList>
       </S.CoffeesContainer>
